@@ -1,0 +1,1205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>SatScratcher — Design &amp; Business Plan</title>
+<style>
+/* -------------------------------------------------- */
+/*  Fonts — embedded from local TTF                   */
+/* -------------------------------------------------- */
+@font-face {
+  font-family: "Press Start 2P";
+  src: url("file:///home/jason/satscratcher/build/fonts/PressStart2P-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("file:///home/jason/satscratcher/build/fonts/Inter-Regular.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("file:///home/jason/satscratcher/build/fonts/Inter-Italic.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: italic;
+}
+
+/* -------------------------------------------------- */
+/*  Design tokens                                     */
+/* -------------------------------------------------- */
+:root {
+  --bg: #252627;
+  --bg-elevated: #2E3032;
+  --bg-deep: #1B1C1D;
+  --text: #CDD3D5;
+  --text-dim: #8A8F91;
+  --primary: #FB6107;
+  --jackpot: #F5A623;
+  --signal: #1B998B;
+  --danger: #C2402C;
+
+  --display: "Press Start 2P", "Courier New", monospace;
+  --body: "Inter", -apple-system, system-ui, sans-serif;
+}
+
+/* -------------------------------------------------- */
+/*  Page geometry                                     */
+/* -------------------------------------------------- */
+@page {
+  size: Letter;
+  margin: 18mm 16mm 20mm 16mm;
+  background: var(--bg);
+
+  @bottom-left {
+    content: "SATSCRATCHER";
+    font-family: var(--display);
+    font-size: 6pt;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+  }
+  @bottom-center {
+    content: "Design & Business Plan";
+    font-family: var(--body);
+    font-size: 8pt;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+  @bottom-right {
+    content: counter(page);
+    font-family: var(--display);
+    font-size: 7pt;
+    color: var(--jackpot);
+  }
+}
+
+@page cover {
+  margin: 0;
+  background: var(--bg);
+  @bottom-left { content: none; }
+  @bottom-center { content: none; }
+  @bottom-right { content: none; }
+}
+
+@page toc {
+  @bottom-left { content: "SATSCRATCHER"; font-family: var(--display); font-size: 6pt; color: var(--text-dim); letter-spacing: 0.08em; }
+  @bottom-center { content: "Table of Contents"; font-family: var(--body); font-size: 8pt; color: var(--text-dim); font-style: italic; }
+  @bottom-right { content: counter(page, lower-roman); font-family: var(--display); font-size: 7pt; color: var(--jackpot); }
+}
+
+/* -------------------------------------------------- */
+/*  Base                                              */
+/* -------------------------------------------------- */
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 10.5pt;
+  line-height: 1.55;
+  margin: 0;
+  padding: 0;
+  -weasy-font-feature-settings: "kern", "liga", "ss01";
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* -------------------------------------------------- */
+/*  Cover page                                        */
+/* -------------------------------------------------- */
+.cover {
+  page: cover;
+  page-break-after: always;
+  /* Letter page size, explicit — weasyprint ignores vh in paginated media */
+  width: 215.9mm;
+  height: 279.4mm;
+  position: relative;
+  padding: 28mm 20mm 24mm 20mm;
+  background: var(--bg);
+  display: block;
+  overflow: hidden;
+}
+
+.cover::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4mm;
+  background: var(--primary);
+}
+.cover::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 4mm;
+  background: var(--jackpot);
+}
+
+.cover-eyebrow {
+  font-family: var(--display);
+  font-size: 9pt;
+  color: var(--jackpot);
+  letter-spacing: 0.12em;
+  margin-top: 4mm;
+  margin-bottom: 14mm;
+}
+
+.cover-title {
+  font-family: var(--display);
+  font-size: 26pt;
+  color: var(--primary);
+  line-height: 1.2;
+  margin: 0;
+  letter-spacing: -0.02em;
+  /* Leave room for info card pinned to the right — Press Start 2P is
+     monospace and can't wrap mid-word, so the title has to actually fit */
+  max-width: 120mm;
+}
+
+.cover-title .tiny {
+  display: block;
+  font-size: 12pt;
+  color: var(--text);
+  margin-top: 8mm;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+
+.cover-tagline {
+  font-family: var(--display);
+  font-size: 11pt;
+  color: var(--text);
+  line-height: 1.8;
+  margin-top: 30mm;
+  padding: 8mm;
+  border: 2px solid var(--primary);
+  background: var(--bg-elevated);
+  max-width: 130mm;
+}
+
+.cover-tagline .win {
+  color: var(--jackpot);
+}
+
+.cover-meta {
+  position: absolute;
+  bottom: 22mm;
+  left: 20mm;
+  right: 20mm;
+  display: flex;
+  justify-content: space-between;
+  gap: 4mm;
+  font-family: var(--display);
+  font-size: 6.5pt;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.cover-meta div { line-height: 1.8; min-width: 0; }
+.cover-meta strong {
+  color: var(--signal);
+  font-weight: normal;
+  display: block;
+  font-size: 5.5pt;
+  margin-bottom: 1mm;
+}
+
+.cover-infocard {
+  position: absolute;
+  right: 20mm;
+  top: 48mm;
+  width: 62mm;
+  padding: 7mm;
+  background: var(--bg-elevated);
+  border-left: 3px solid var(--primary);
+  font-family: var(--display);
+  font-size: 6.5pt;
+  line-height: 2.2;
+  color: var(--text);
+}
+.cover-infocard .row { display: block; }
+.cover-infocard .label { color: var(--text-dim); }
+.cover-infocard .value { color: var(--jackpot); }
+.cover-infocard .title {
+  display: block;
+  font-size: 9pt;
+  color: var(--primary);
+  margin-bottom: 4mm;
+  letter-spacing: 0.05em;
+}
+
+/* -------------------------------------------------- */
+/*  Table of Contents                                 */
+/* -------------------------------------------------- */
+.toc {
+  page: toc;
+  page-break-after: always;
+  padding-top: 8mm;
+}
+
+.toc h1 {
+  font-family: var(--display);
+  font-size: 18pt;
+  color: var(--primary);
+  margin: 0 0 3mm 0;
+  letter-spacing: -0.01em;
+}
+
+.toc-sub {
+  font-family: var(--body);
+  font-size: 10pt;
+  color: var(--text-dim);
+  font-style: italic;
+  margin-bottom: 10mm;
+}
+
+.toc ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: toc-counter;
+}
+
+.toc li {
+  display: block;
+  font-family: var(--body);
+  font-size: 11pt;
+  color: var(--text);
+  padding: 3mm 0;
+  border-bottom: 1px dashed var(--bg-elevated);
+  counter-increment: toc-counter;
+  position: relative;
+  padding-left: 12mm;
+}
+
+.toc li::before {
+  content: counter(toc-counter, decimal-leading-zero);
+  font-family: var(--display);
+  font-size: 9pt;
+  color: var(--jackpot);
+  position: absolute;
+  left: 0;
+  top: 3.5mm;
+}
+
+.toc li .title-text { color: var(--text); }
+.toc li .page-ref {
+  float: right;
+  font-family: var(--display);
+  font-size: 9pt;
+  color: var(--signal);
+}
+
+/* -------------------------------------------------- */
+/*  Body content                                      */
+/* -------------------------------------------------- */
+.body-content {
+  padding-top: 2mm;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--display);
+  font-weight: normal;
+  color: var(--text);
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+}
+
+h2 {
+  font-size: 15pt;
+  color: var(--primary);
+  margin: 0 0 4mm 0;
+  padding-bottom: 3mm;
+  border-bottom: 2px solid var(--primary);
+  page-break-before: always;
+  page-break-after: avoid;
+}
+
+.body-content > h2:first-of-type {
+  page-break-before: avoid;
+}
+
+h3 {
+  font-size: 11pt;
+  color: var(--jackpot);
+  margin: 7mm 0 2mm 0;
+  page-break-after: avoid;
+}
+
+h4 {
+  font-size: 9pt;
+  color: var(--signal);
+  margin: 5mm 0 1mm 0;
+  letter-spacing: 0.02em;
+  page-break-after: avoid;
+}
+
+p {
+  margin: 0 0 3mm 0;
+  color: var(--text);
+  orphans: 3;
+  widows: 3;
+}
+
+strong { color: var(--text); font-weight: 700; }
+em { color: var(--jackpot); font-style: italic; }
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--primary);
+}
+
+/* -------------------------------------------------- */
+/*  Lists                                             */
+/* -------------------------------------------------- */
+ul, ol {
+  margin: 1mm 0 3mm 0;
+  padding-left: 6mm;
+  color: var(--text);
+}
+ul li, ol li {
+  margin-bottom: 1mm;
+}
+ul li::marker {
+  color: var(--primary);
+  content: "▸ ";
+}
+ol li::marker {
+  color: var(--jackpot);
+  font-family: var(--display);
+  font-size: 9pt;
+}
+
+/* -------------------------------------------------- */
+/*  Blockquotes — used for voice samples              */
+/* -------------------------------------------------- */
+blockquote {
+  margin: 4mm 0;
+  padding: 4mm 6mm;
+  background: var(--bg-elevated);
+  border-left: 3px solid var(--signal);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 10pt;
+  line-height: 1.65;
+  page-break-inside: avoid;
+}
+blockquote > :first-child { margin-top: 0; }
+blockquote > :last-child { margin-bottom: 0; }
+blockquote h1 {
+  font-family: var(--display);
+  font-size: 11pt;
+  color: var(--jackpot);
+  margin: 0 0 3mm 0;
+}
+blockquote strong { color: var(--primary); }
+blockquote code { background: var(--bg-deep); }
+
+/* -------------------------------------------------- */
+/*  Code blocks                                       */
+/* -------------------------------------------------- */
+code {
+  font-family: "Inter", monospace;
+  background: var(--bg-elevated);
+  color: var(--jackpot);
+  padding: 0.5mm 1.5mm;
+  border-radius: 1mm;
+  font-size: 9pt;
+}
+
+pre {
+  background: var(--bg-deep);
+  border-left: 3px solid var(--primary);
+  padding: 4mm;
+  margin: 3mm 0;
+  font-family: "Inter", monospace;
+  font-size: 7pt;
+  line-height: 1.45;
+  color: var(--text);
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  page-break-inside: avoid;
+}
+pre code {
+  background: transparent;
+  color: var(--text);
+  padding: 0;
+  font-size: inherit;
+}
+
+/* -------------------------------------------------- */
+/*  Tables                                            */
+/* -------------------------------------------------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 3mm 0 5mm 0;
+  font-size: 9pt;
+  page-break-inside: avoid;
+}
+
+th, td {
+  padding: 2mm 3mm;
+  text-align: left;
+  border-bottom: 1px solid var(--bg-elevated);
+  vertical-align: top;
+}
+
+th {
+  font-family: var(--display);
+  font-size: 7pt;
+  color: var(--jackpot);
+  background: var(--bg-elevated);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--primary);
+}
+
+td code {
+  font-size: 8pt;
+  background: var(--bg-deep);
+}
+
+/* -------------------------------------------------- */
+/*  HR                                                */
+/* -------------------------------------------------- */
+hr {
+  border: none;
+  height: 1px;
+  background: var(--bg-elevated);
+  margin: 6mm 0;
+}
+
+/* -------------------------------------------------- */
+/*  Executive Summary callout                         */
+/* -------------------------------------------------- */
+.body-content h2:first-of-type + p,
+.body-content h2:first-of-type + p + p {
+  color: var(--text);
+  font-size: 10pt;
+}
+</style>
+</head>
+<body>
+
+<!-- ============= COVER PAGE ============= -->
+<section class="cover">
+  <div class="cover-eyebrow">&#9608;&#9608;&#9608;&nbsp;&nbsp;A DESK TOY LOTTERY MINER&nbsp;&nbsp;&#9608;&#9608;&#9608;</div>
+
+  <h1 class="cover-title">
+    SatScratcher
+    <span class="tiny">Design &amp; Business Plan</span>
+  </h1>
+
+  <div class="cover-infocard">
+    <span class="title">INFO CARD</span>
+    <span class="row"><span class="label">HASHRATE:</span><br><span class="value">BASICALLY NOTHING</span></span>
+    <span class="row"><span class="label">ODDS:</span><br><span class="value">WORSE THAN TERRIBLE</span></span>
+    <span class="row"><span class="label">VIBES:</span><br><span class="value">IMMACULATE</span></span>
+  </div>
+
+  <div class="cover-tagline">
+    MINE BITCOIN.<br>
+    WIN <span class="win">(MAYBE)</span>.<br>
+    LOOK COOL REGARDLESS.
+  </div>
+
+  <div class="cover-meta">
+    <div>
+      <strong>VERSION</strong>
+      1.0
+    </div>
+    <div>
+      <strong>DATE</strong>
+      2026-04-09
+    </div>
+    <div>
+      <strong>DOMAIN</strong>
+      satscratcher.shop
+    </div>
+    <div>
+      <strong>REPO</strong>
+      jasonpersinger/satscratcher
+    </div>
+  </div>
+</section>
+
+<!-- ============= TABLE OF CONTENTS ============= -->
+<section class="toc">
+  <h1>CONTENTS</h1>
+  <div class="toc-sub">Seven sections, plus appendices. Read them or don't.</div>
+  <ol>
+    <li><span class="title-text">Executive Summary</span></li>
+    <li><span class="title-text">Overview &amp; Product Definition</span></li>
+    <li><span class="title-text">Brand System</span></li>
+    <li><span class="title-text">Storefront Site</span></li>
+    <li><span class="title-text">Content — Setup Guide, FAQ &amp; Quickstart Card</span></li>
+    <li><span class="title-text">Firmware Customization</span></li>
+    <li><span class="title-text">Channels, Pricing &amp; Unit Economics</span></li>
+    <li><span class="title-text">Repository Structure</span></li>
+    <li><span class="title-text">Appendix A — Market Research Summary</span></li>
+    <li><span class="title-text">Appendix B — Decisions Log</span></li>
+    <li><span class="title-text">Appendix C — Open Questions &amp; Risks</span></li>
+  </ol>
+</section>
+
+<!-- ============= BODY ============= -->
+<div class="body-content">
+<h2 id="executive-summary">Executive Summary</h2>
+<p>SatScratcher is a pre-flashed, pixel-art-branded Bitcoin &ldquo;lottery&rdquo; miner sold as a desk toy through a single-page Snipcart-checkout site with a mirrored Etsy listing. The physical product is an ESP32-2432S028R &ldquo;CYD&rdquo; board sourced from AliExpress at ~$14 shipped, running a lightly customized NMMiner firmware with SatScratcher branding, mascot-based idle screens, and a branded WiFi provisioning portal.</p>
+<p>The brand is honest about the math (&ldquo;odds: worse than terrible&rdquo;) and sells on vibes, not winning. Target audience is the novelty/curiosity impulse buyer — non-crypto-native, gift-adjacent, vibes-driven. The hustle is scoped as <strong>beer money</strong>: ~5 sales per month is the success bar; ~20 per month is aspirational. No path to full-time income, and no design decision should add ongoing operational overhead in pursuit of scale.</p>
+<hr>
+<h2 id="1-overview-product-definition">1. Overview &amp; Product Definition</h2>
+<p><strong>One-sentence definition:</strong> A pre-flashed, SatScratcher-branded CYD-board Bitcoin lottery miner sold as a desk toy through a single-page Snipcart-checkout site, a mirrored Etsy listing, and future marketplaces as opportunity allows.</p>
+<p><strong>Primary audience:</strong> Novelty/curiosity impulse buyers — non-crypto-native, gift-adjacent, vibes-driven. Discovered via TikTok, Instagram, Etsy browsing, word-of-mouth.</p>
+<p><strong>Secondary audience:</strong> Bitcoin-nerd gift buyers — someone buying for a friend or partner who&rsquo;s &ldquo;into Bitcoin.&rdquo;</p>
+<p><strong>Not targeted:</strong> Bitcoin maximalists self-buying, serious hobbyist tinkerers, commercial miners.</p>
+<h3 id="11-the-physical-product">1.1 The Physical Product</h3>
+<ul>
+<li><strong>Hardware:</strong> ESP32-2432S028R &ldquo;CYD&rdquo; (Cheap Yellow Display) board with its included plastic case, sourced from AliExpress at approximately $14 shipped. 2.8&rdquo; resistive touchscreen, ESP32-WROOM-32 MCU, 240×320 display.</li>
+<li><strong>Firmware:</strong> A SatScratcher fork of NMMiner (<code>github.com/NMminer1024/NMMiner</code>) with four customizations — renamed access point SSID, branded boot splash, mascot-state idle screens, and a restyled config portal.</li>
+<li><strong>Packaging:</strong> USPS padded mailer containing the board in its plastic case and a 4×6&rdquo; MOO-printed 2-sided cardstock quickstart card with a QR code linking to the online setup guide. No branded outer box.</li>
+<li><strong>Fulfillment:</strong> Flash-to-order or small batches of 8 via a powered USB hub. Ships from Jason&rsquo;s address.</li>
+</ul>
+<h3 id="12-positioning-promise">1.2 Positioning Promise</h3>
+<blockquote>
+<p>Mine Bitcoin. Win (Maybe). Look Cool Regardless.</p>
+</blockquote>
+<h3 id="13-explicit-non-goals-for-v1">1.3 Explicit Non-Goals for v1</h3>
+<ul>
+<li>Multiple SKUs, product variants, seasonal editions</li>
+<li>A blog, email capture, loyalty program, referral codes, abandoned-cart email</li>
+<li>A &ldquo;did you win?&rdquo; checker tool on the website</li>
+<li>Custom outer packaging beyond the padded mailer and card</li>
+<li>Paid advertising of any kind</li>
+<li>Any decision that requires ongoing creative or operational labor to sustain</li>
+<li>Any path that turns the hustle into a full-time business</li>
+</ul>
+<h3 id="14-success-criteria">1.4 Success Criteria</h3>
+<ul>
+<li>Healthy margin per unit after bill-of-materials, shipping, platform fees, and printed collateral</li>
+<li>Sustained beer-money-level volume: ~5 sales per month is the success bar, ~20 per month is aspirational</li>
+<li>No ongoing maintenance beyond printing shipping labels, flashing boards, and the occasional support email</li>
+<li>A site that survives cold traffic without constant tending</li>
+</ul>
+<hr>
+<h2 id="2-brand-system">2. Brand System</h2>
+<h3 id="21-identity-foundation">2.1 Identity Foundation</h3>
+<p>The brand identity is <strong>pixel-art retro-gaming kawaii</strong> — not moody-modern, not terminal-industrial, not Bitcoin-maxi. The core visual motif is an orange pixel-art cat mascot that exists in four states — Neutral, Scratching, Winning, Losing — each of which maps directly to a firmware event on the physical device. <strong>The mascot is the face of the brand and the user interface simultaneously.</strong></p>
+<p><strong>Locked assets (from <code>brandingexample.jpeg</code>, produced by Jason):</strong></p>
+<ul>
+<li>Pixel-cat mascot in four states</li>
+<li>Primary logo lockup: mascot + &ldquo;SatScratcher&rdquo; pixel wordmark</li>
+<li>Compact logo: cat head with a pixel Bitcoin coin</li>
+<li>Motif elements: pixel Bitcoin coins, scratch-panel texture, device-as-sticker</li>
+<li>Tagline: <em>Mine Bitcoin. Win (Maybe). Look Cool Regardless.</em></li>
+<li>Subtitle: <em>A desk toy lottery miner.</em></li>
+<li>Voice sample: the Info Card (&ldquo;Hashrate: Basically nothing / Odds: Worse than terrible / Vibes: Immaculate&rdquo;)</li>
+</ul>
+<h3 id="22-color-palette">2.2 Color Palette</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Hex</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--bg</code></td>
+<td><code>#252627</code></td>
+<td>Page background, primary surface</td>
+</tr>
+<tr>
+<td><code>--bg-elevated</code></td>
+<td><code>#2E3032</code></td>
+<td>Card backgrounds, elevated surfaces</td>
+</tr>
+<tr>
+<td><code>--text</code></td>
+<td><code>#CDD3D5</code></td>
+<td>Body text, secondary UI</td>
+</tr>
+<tr>
+<td><code>--primary</code></td>
+<td><code>#FB6107</code></td>
+<td>CTAs, logo, active links, primary interactive</td>
+</tr>
+<tr>
+<td><code>--jackpot</code></td>
+<td><code>#F5A623</code></td>
+<td>Prices, &ldquo;WIN&rdquo; moments, celebrations, the mascot&rsquo;s base color</td>
+</tr>
+<tr>
+<td><code>--signal</code></td>
+<td><code>#1B998B</code></td>
+<td>Mining-active indicator, success states, dividers</td>
+</tr>
+<tr>
+<td><code>--photo-bg</code></td>
+<td><code>#FFFFFF</code></td>
+<td>Product photography backgrounds only</td>
+</tr>
+<tr>
+<td><code>--danger</code></td>
+<td><code>#C2402C</code></td>
+<td>Form errors, introduced if/when needed</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Usage allocation rule of thumb:</strong></p>
+<ul>
+<li><code>--bg</code>: ~80% of surface area</li>
+<li><code>--text</code>: ~15%</li>
+<li><code>--primary</code>: ~3% — CTAs and logo</li>
+<li><code>--jackpot</code>: ~1% — prices and celebration moments</li>
+<li><code>--signal</code>: &lt;1% — status dots and dividers</li>
+</ul>
+<p><strong>Critical rule:</strong> <code>--primary</code> is what the eye <em>acts on</em> (buy buttons, links). <code>--jackpot</code> is what the eye <em>celebrates</em> (prices, prizes, wins). <strong>Never put both on the same element</strong> — they will scream at each other.</p>
+<p><strong>Caveat:</strong> <code>--signal</code> (#1B998B) on <code>--bg</code> (#252627) is approximately 4:1 contrast — fine for large decorative elements, dividers, and success states, but borderline for body text per WCAG AA. Do not use it as a link color for inline prose. Reserve it for chunky elements.</p>
+<h3 id="23-typography">2.3 Typography</h3>
+<p><strong>Display (headlines, numerics, device readouts):</strong> <strong>Press Start 2P</strong> (Google Fonts, SIL OFL, free for commercial use). The definitive 8-bit arcade font. Self-hosted. Renders crisply at integer multiples of its native size (8px, 16px, 24px, 32px). Use sparingly — never for runs longer than ~8 words.</p>
+<p><strong>Body (FAQ, setup guide, paragraph text, UI chrome):</strong> <strong>Inter</strong> at 400/500/700. Self-hosted from Google Fonts. Pairs cleanly with any display font. The same font used on <code>nixkey.shop</code>, for portfolio consistency.</p>
+<p><strong>Rendering rule for pixel assets:</strong> apply <code>image-rendering: pixelated</code> to all mascot/coin/sprite images so browsers scale them correctly without blurring.</p>
+<h3 id="24-voice">2.4 Voice</h3>
+<p>The voice sample from the Info Card — <em>&ldquo;Hashrate: Basically nothing / Odds: Worse than terrible / Vibes: Immaculate&rdquo;</em> — is the template for all copy on all surfaces. Distilled into rules:</p>
+<ol>
+<li><strong>Honest about the math.</strong> Never claim the buyer will win. Never use &ldquo;2000% win boost&rdquo; Amazon-listing slop. The joke <em>is</em> the honesty.</li>
+<li><strong>Self-deprecating confidence.</strong> You know it won&rsquo;t win. They know it won&rsquo;t win. The device still looks cool on a desk. That&rsquo;s the whole deal and everyone&rsquo;s in on it.</li>
+<li><strong>Short, punchy, dry.</strong> If a sentence can be cut in half, cut it in half. If a word can be cut, cut it.</li>
+<li><strong>Kawaii + deadpan.</strong> The mascot is cute; the copy is dry. The contrast is the comedy.</li>
+<li><strong>Never cringe-maxi.</strong> No &ldquo;stack sats,&rdquo; no &ldquo;have fun staying poor,&rdquo; no laser eyes. This is a gift shop, not a Twitter thread.</li>
+<li><strong>Name the feeling, not the feature.</strong> &ldquo;Your desk, but luckier&rdquo; beats &ldquo;1000 KH/s ESP32 Bitcoin Miner.&rdquo;</li>
+</ol>
+<h3 id="25-taglines">2.5 Taglines</h3>
+<p><strong>Primary:</strong></p>
+<blockquote>
+<p>Mine Bitcoin. Win (Maybe). Look Cool Regardless.</p>
+</blockquote>
+<p><strong>Secondary / rotational:</strong></p>
+<blockquote>
+<p>The world&rsquo;s slowest lottery ticket.<br>
+A desk toy for your Bitcoin delusions.<br>
+0.0000000001% of the fun at 100% of the price.<br>
+It will probably not win. That is the feature.<br>
+Plug it in. Forget about it. Stay hopeful.</p>
+</blockquote>
+<h3 id="26-brand-donts">2.6 Brand DON&rsquo;Ts</h3>
+<ul>
+<li>No laser eyes, no &ldquo;HODL,&rdquo; no Dogecoin, no Shiba mascots. The cat&rsquo;s territory is sacred.</li>
+<li>No orange-on-dark theme on other people&rsquo;s terms (avoid Hacker News orange, Home Depot orange). Always the <code>#FB6107</code> in context with the full palette.</li>
+<li>No stretching, recoloring, or rotating the mascot.</li>
+<li>No serif fonts anywhere, ever.</li>
+<li>No testimonials that sound like &ldquo;I&rsquo;m rich now&rdquo; — only &ldquo;this made me smile.&rdquo;</li>
+<li>No cringe of any kind. The bar is high because the premise is silly; the execution has to compensate.</li>
+</ul>
+<hr>
+<h2 id="3-storefront-site">3. Storefront Site</h2>
+<h3 id="31-tech-stack">3.1 Tech Stack</h3>
+<ul>
+<li><strong>Static site generator:</strong> <a href="https://www.11ty.dev">Eleventy (11ty)</a> — markdown-driven content, minimal config, outputs plain HTML.</li>
+<li><strong>Styling:</strong> plain CSS with CSS custom properties for the palette tokens. No Tailwind, no preprocessors. One <code>styles.css</code>, one <code>critical.css</code> inlined into <code>&lt;head&gt;</code>.</li>
+<li><strong>JavaScript:</strong> vanilla, minimal. Only what Snipcart requires, plus lazy-loading for Snipcart itself.</li>
+<li><strong>Fonts:</strong> self-hosted WOFF2 for Press Start 2P and Inter, preloaded via <code>&lt;link rel="preload"&gt;</code>.</li>
+<li><strong>Hosting:</strong> Cloudflare Pages free tier with git-push deploys. Backup: Netlify free tier.</li>
+<li><strong>Repo location:</strong> <code>/site/</code> subdirectory within the main SatScratcher repo.</li>
+</ul>
+<p><strong>Precedent:</strong> If <code>nixkey.shop</code> uses a different static-site generator, this stack will mirror it instead for portfolio consistency. Absent that constraint, 11ty is the pick.</p>
+<h3 id="32-page-map">3.2 Page Map</h3>
+<table>
+<thead>
+<tr>
+<th>Route</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/</code></td>
+<td>Main shop page (hero, product, how it works, FAQ)</td>
+</tr>
+<tr>
+<td><code>/guide/</code></td>
+<td>Setup guide hub</td>
+</tr>
+<tr>
+<td><code>/guide/quickstart/</code></td>
+<td>5-minute plug-and-play setup</td>
+</tr>
+<tr>
+<td><code>/guide/get-a-bitcoin-address/</code></td>
+<td>Audience-D unlock: how to get a BTC address with zero prior crypto experience</td>
+</tr>
+<tr>
+<td><code>/guide/what-if-i-win/</code></td>
+<td>The joke-serious &ldquo;you won&rsquo;t, but just in case&rdquo; page</td>
+</tr>
+<tr>
+<td><code>/guide/troubleshooting/</code></td>
+<td>Top 5 common issues</td>
+</tr>
+<tr>
+<td><code>/faq/</code></td>
+<td>Full FAQ with deep-linkable anchors</td>
+</tr>
+<tr>
+<td><code>/terms/</code></td>
+<td>Terms of sale</td>
+</tr>
+<tr>
+<td><code>/privacy/</code></td>
+<td>Privacy policy</td>
+</tr>
+<tr>
+<td><code>/shipping-and-returns/</code></td>
+<td>Shipping and return policy</td>
+</tr>
+</tbody>
+</table>
+<h3 id="33-main-page-section-breakdown">3.3 Main Page Section Breakdown</h3>
+<p><strong>1. Topbar</strong> — Sticky. Compact logo left. Anchor nav center: <code>What It Is</code>, <code>How It Works</code>, <code>FAQ</code>, <code>Guide</code>. Snipcart cart button right with item count badge.</p>
+<p><strong>2. Hero</strong> — Full-viewport. Left column: large Press Start 2P headline (&ldquo;Mine Bitcoin. Win (Maybe). Look Cool Regardless.&rdquo;), Inter subline (&ldquo;A desk toy lottery miner. Plug it in. Forget about it. Stay hopeful.&rdquo;), primary CTA button in <code>--primary</code> (&ldquo;GRAB ONE — $39&rdquo;), secondary link (&ldquo;How it works ↓&rdquo;). Right column: photo/render of the device running with the Scratching mascot visible on screen, surrounded by subtle scratch-panel texture.</p>
+<p><strong>3. What It Is</strong> — Three-column grid, one mascot state per column. Column headers: <em>&ldquo;It mines Bitcoin.&rdquo;</em> / <em>&ldquo;It (probably) won&rsquo;t win.&rdquo;</em> / <em>&ldquo;It looks rad on your desk.&rdquo;</em> Short paragraph under each. The honesty moment.</p>
+<p><strong>4. Product Card</strong> — Single SKU, prominently displayed. Device photo plus the Info Card metadata in voice, price tag in <code>--jackpot</code>, Snipcart add-to-cart button styled as primary CTA. Directly below: four small tiles showing what&rsquo;s in the box.</p>
+<p><strong>5. How It Works</strong> — Four horizontal steps with pixel-art iconography: <strong>1. Unbox.</strong> <strong>2. Plug into any USB.</strong> <strong>3. Add your Bitcoin address.</strong> <strong>4. Wait forever.</strong> The last step&rsquo;s caption is the joke: <em>&ldquo;Some customers have been waiting since 2024. They seem happy.&rdquo;</em></p>
+<p><strong>6. FAQ</strong> — 5–7 anxiety-addressing questions, collapsible, deep-linkable anchors.</p>
+<p><strong>7. Footer</strong> — Wordmark, tagline, columns: <code>Shop</code> (main, guide, FAQ) / <code>Fine Print</code> (terms, privacy, shipping) / <code>Say Hi</code> (support email). Copyright. Small mascot in corner.</p>
+<h3 id="34-snipcart-integration">3.4 Snipcart Integration</h3>
+<ul>
+<li>Public API key in a <code>&lt;meta&gt;</code> tag in the shared layout head.</li>
+<li>Product button: <code>button.snipcart-add-item</code> with data attributes for <code>item-id</code>, <code>item-name</code>, <code>item-price</code>, <code>item-url</code>, <code>item-description</code>, <code>item-image</code>, <code>item-weight</code>, <code>item-shippable="true"</code>.</li>
+<li>Snipcart JS lazy-loaded on first user interaction (focus, mouseover, scroll, touchstart) with a 2750ms <code>setTimeout</code> fallback — the same pattern <code>nixkey.shop</code> uses.</li>
+<li>Cart modal: side position.</li>
+<li>Shipping configured in the Snipcart dashboard, not in code. Flat-rate US first-class padded mailer.</li>
+<li>Tax: Snipcart&rsquo;s built-in US sales tax handling. International excluded in v1.</li>
+</ul>
+<h3 id="35-performance-target">3.5 Performance Target</h3>
+<p>Lighthouse 95+ on mobile, LCP under 2 seconds, zero cumulative layout shift. The pixel-art aesthetic is naturally lightweight (tiny PNGs, pixelated upscaling). Primary risk is font loading, mitigated by self-hosting and preload hints.</p>
+<hr>
+<h2 id="4-content-setup-guide-faq-quickstart-card">4. Content — Setup Guide, FAQ &amp; Quickstart Card</h2>
+<p>All content in the voice from §2.4. Sample copy below is production-ready and can be committed to the site as written.</p>
+<h3 id="41-quickstart-card-physical">4.1 Quickstart Card (Physical)</h3>
+<p><strong>Spec:</strong>
+- <strong>Size:</strong> 4&rdquo; × 6&rdquo; postcard, landscape orientation
+- <strong>Stock:</strong> MOO Luxe or equivalent matte cardstock, ~350 gsm
+- <strong>Print:</strong> CMYK, 300 DPI, 0.125&rdquo; bleed on all sides, 0.25&rdquo; safe margin for text
+- <strong>Per-unit cost:</strong> ~$0.30–0.45 at MOO quantities of 50–200</p>
+<p><strong>Front (reveal side):</strong>
+- Full-bleed <code>--bg</code> background with a low-opacity scratch-panel texture
+- Large centered Scratching mascot
+- Press Start 2P headline in <code>--jackpot</code>: <strong>&ldquo;YOU BOUGHT A LOTTERY TICKET.&rdquo;</strong>
+- Inter subline in <code>--text</code>: <em>&ldquo;It is the slowest one in the world. Welcome.&rdquo;</em>
+- Compact logo in the bottom-right corner</p>
+<p><strong>Back (instructions side):</strong>
+- Same background
+- Three numbered steps:
+    - <strong>01. PLUG IT IN.</strong> <em>Any USB port. Computer, phone charger, power bank — it doesn&rsquo;t care.</em>
+    - <strong>02. CONNECT WIFI.</strong> <em>Join the &ldquo;SatScratcher&rdquo; network on your phone and pick your home WiFi from the list.</em>
+    - <strong>03. ADD YOUR ADDRESS.</strong> <em>Paste a Bitcoin address and tap save. Don&rsquo;t have one? Scan the QR below.</em>
+- Centered QR code (in <code>--primary</code> on <code>--bg</code>) linking to <code>satscratcher.shop/guide</code>
+- Footer: <code>satscratcher.shop</code> · <em>Stuck? [support email]</em></p>
+<h3 id="42-setup-guide">4.2 Setup Guide</h3>
+<p><strong><code>/guide/quickstart/</code>:</strong></p>
+<blockquote>
+<h1 id="five-minutes-to-a-slowly-mining-desk-toy">Five minutes to a slowly-mining desk toy.</h1>
+<p>This will probably take less time than picking a WiFi password.</p>
+<p><strong>1. Plug it in.</strong> Any USB port. You&rsquo;ll see a pixel cat appear on the screen. Give it about 15 seconds — on first boot it&rsquo;ll automatically enter setup mode and broadcast its own WiFi network.</p>
+<p><strong>2. Join its WiFi.</strong> On your phone or laptop, look for a network called <strong>SatScratcher</strong> and connect to it. You&rsquo;ll be dropped onto a tiny setup page served by the device itself. <em>(Yes, the device is briefly its own WiFi router. Welcome to embedded electronics.)</em></p>
+<p><strong>3. Pick your home WiFi</strong> from the list and type the password. The device will disconnect from its own network and reconnect through yours.</p>
+<p><strong>4. Paste a Bitcoin address.</strong> Got one? Great, skip to step 5. Don&rsquo;t have one? <a href="/guide/get-a-bitcoin-address/">Here&rsquo;s how to get one in 5 minutes</a>.</p>
+<p><strong>5. That&rsquo;s it.</strong> The cat will start Scratching. You&rsquo;ll see a hashrate counter climb to ~1000 KH/s. That&rsquo;s your lottery ticket doing its best.</p>
+</blockquote>
+<p><strong><code>/guide/get-a-bitcoin-address/</code>:</strong></p>
+<blockquote>
+<h1 id="how-to-get-a-bitcoin-address-in-5-minutes-with-zero-prior-experience">How to get a Bitcoin address in 5 minutes, with zero prior experience.</h1>
+<p>You need something called a <em>receiving address</em> — a long string of letters and numbers that the SatScratcher sends your winnings to (in the cosmically unlikely event that you win). You don&rsquo;t need to buy any Bitcoin. You don&rsquo;t need to verify your identity at a bank. You just need a spot to receive.</p>
+<p>We recommend two apps, depending on how much setup you want to do.</p>
+<p><strong>Path A: Cash App</strong> <em>(easiest, US only)</em> — Cash App is the grocery-store-checkout-line of Bitcoin apps. You probably already have it. [Numbered steps + screenshots to follow during implementation.]</p>
+<p><strong>Path B: Strike</strong> <em>(cleanest, also US)</em> — Strike is built specifically around Bitcoin and has a cleaner address interface. [Numbered steps + screenshots to follow.]</p>
+<p><strong>Path C: You already know what you&rsquo;re doing</strong> — Use any wallet you want. Self-custody is great. We&rsquo;re not going to lecture you about it.</p>
+<p>⚠️ <strong>One rule:</strong> Only send Bitcoin to a Bitcoin address. It&rsquo;s easy to accidentally paste the wrong thing. If the SatScratcher app says the address is invalid, don&rsquo;t override it — go back and copy it again.</p>
+</blockquote>
+<p><strong><code>/guide/what-if-i-win/</code>:</strong></p>
+<blockquote>
+<h1 id="what-if-i-actually-win">What if I actually win?</h1>
+<p>First: you won&rsquo;t.</p>
+<p>Second: if you do, we want to hear about it, because it&rsquo;ll be the most improbable thing to ever happen to anyone who bought a thing on the internet for $39.</p>
+<p>Third — if somehow a real block is found — here&rsquo;s what actually happens:</p>
+<ul>
+<li>Your device will land on the <strong>Winning</strong> mascot screen (the cat with coin eyes).</li>
+<li>The block reward (~3.125 BTC at the current halving, worth roughly however-many-dollars Bitcoin is worth today) will be sent to the Bitcoin address you entered during setup.</li>
+<li>It will appear in whatever wallet owns that address, the same way any other Bitcoin arrives.</li>
+<li>You will owe taxes on it. We are not your accountant. Get one.</li>
+</ul>
+<p>The probability of this happening in your lifetime, with one SatScratcher running 24/7, is approximately the same as being struck by lightning while also being attacked by a shark. Do not plan your finances around it.</p>
+<p>The point of the SatScratcher is not the winning. The point is that it&rsquo;s running.</p>
+</blockquote>
+<p><strong><code>/guide/troubleshooting/</code>:</strong></p>
+<blockquote>
+<ol>
+<li><strong>The screen is blank.</strong> Unplug, wait 5 seconds, plug back in. If still blank, try a different USB cable (90% of the time this is the cable).</li>
+<li><strong>I can&rsquo;t find the SatScratcher WiFi network.</strong> It disappears after you&rsquo;ve connected to your home WiFi once. If you want to change networks, hold the top button for 5 seconds to reset.</li>
+<li><strong>The hashrate is lower than advertised.</strong> Normal fluctuation; it depends on the firmware&rsquo;s work cycle and your room temperature. Anything from 700–1100 KH/s is fine.</li>
+<li><strong>The mascot is stuck on Losing.</strong> This means the device can&rsquo;t reach a mining pool. Check WiFi. If your WiFi is fine, the public pool is probably having a bad day — give it an hour.</li>
+<li><strong>Something else is broken.</strong> [support email]. We respond within a day or two. We are one human.</li>
+</ol>
+</blockquote>
+<h3 id="43-faq">4.3 FAQ</h3>
+<p>Six questions, deep-linkable anchors.</p>
+<blockquote>
+<p><strong>Is this a scam?</strong>
+No, and we&rsquo;ll prove it: we&rsquo;re openly telling you that this thing will not win. Scams promise wins. We promise vibes. The SatScratcher is a real ESP32-based Bitcoin miner running open-source firmware (NMMiner). It hashes Bitcoin the same way any other miner does — just very, very slowly.</p>
+<p><strong>Will I actually win Bitcoin?</strong>
+Technically: yes, maybe. Practically: no. Mathematically: the odds are roughly one in three hundred billion per block attempt. The Bitcoin network produces a block every ten minutes. We leave the full calculation to you as an exercise.</p>
+<p><strong>Do I need to know anything about Bitcoin to use this?</strong>
+Nope. You need to be able to plug in a USB cable and copy-paste a string of text. We wrote a guide that walks you through getting a Bitcoin address in 5 minutes if you&rsquo;ve never touched crypto.</p>
+<p><strong>What happens if it wins?</strong>
+We wrote a whole page about this, because we thought it was funny. Short version: the block reward goes to the address you set up, and you owe taxes on it.</p>
+<p><strong>How much electricity does this use?</strong>
+About 1 watt — less than an LED nightlight. Running it 24/7 for a year costs around a dollar in electricity in the US. Cheaper than most hobbies.</p>
+<p><strong>Can I return it?</strong>
+Yes. 30 days, undamaged, in the case. Shipping back is on you. We&rsquo;ll refund the purchase price, no hard feelings. We&rsquo;d rather have happy customers than reluctant owners.</p>
+<p><strong>Is this the same as the ones on Amazon?</strong>
+The board is similar. The firmware, the branding, the mascot, the setup guide, the quickstart card, and the human who answers support emails are not. You&rsquo;re paying for the thing <em>and</em> the experience of the thing. If you just want a bare board and can handle flashing firmware yourself, Amazon is a valid choice and we won&rsquo;t be offended.</p>
+</blockquote>
+<hr>
+<h2 id="5-firmware-customization">5. Firmware Customization</h2>
+<h3 id="51-starting-point">5.1 Starting Point</h3>
+<ul>
+<li><strong>Upstream:</strong> <a href="https://github.com/NMminer1024/NMMiner">NMMiner</a>, MIT-licensed (verify before release).</li>
+<li><strong>Fork:</strong> <code>github.com/jasonpersinger/NMMiner-SatScratcher</code> — a direct GitHub fork, not a submodule. Simpler operational model for a project this size.</li>
+<li><strong>Toolchain:</strong> PlatformIO, Arduino framework for ESP32, board target <code>esp32-2432S028R</code>.</li>
+</ul>
+<h3 id="52-the-four-changes">5.2 The Four Changes</h3>
+<p><strong>1. Rename the access point SSID.</strong> From NMMiner&rsquo;s default <code>nmap-2.4g</code> to <code>SatScratcher</code> (open, no password). A one-line source change. This is the single highest-UX-payoff change in the entire firmware scope: the buyer&rsquo;s WiFi list shows &ldquo;SatScratcher&rdquo; on first boot, which is a trust signal, a branding moment, and a legibility win simultaneously.</p>
+<p><strong>2. Replace the boot splash.</strong> NMMiner draws a boot logo via TFT_eSPI on startup. Replace the image asset with a C header generated from a SatScratcher splash PNG (mascot + wordmark, centered on <code>--bg</code>, ~240×160 px within the 240×320 display), shown for ~2 seconds on boot.</p>
+<p><strong>3. Replace the idle/mining screens</strong> with the four mascot states driven by mining events:</p>
+<ul>
+<li><strong>Neutral</strong> — shown for the first ~5 seconds after boot, before hashing starts</li>
+<li><strong>Scratching</strong> — the default active-mining state. Cycle between 2–3 pixel frames at ~2 fps so the cat looks alive</li>
+<li><strong>Winning</strong> — shown on valid share accepted (not just block-found, which will never happen; valid shares give the buyer regular small dopamine hits)</li>
+<li><strong>Losing</strong> — shown on pool disconnect, WiFi disconnect, or rejected share</li>
+</ul>
+<p>On-screen HUD below the mascot:
+- Hashrate in <code>--jackpot</code> using Press Start 2P
+- Pool status dot (<code>--signal</code> teal when connected, <code>--primary</code> orange when reconnecting, <code>--danger</code> red on failure)
+- Small scrolling &ldquo;MINING…&rdquo; ticker in <code>--text</code> gray</p>
+<p><strong>4. Restyle the config portal page template.</strong> The web page NMMiner serves at <code>192.168.4.1</code> during provisioning gets a SatScratcher skin: same palette, Press Start 2P headline, Inter body, mascot in the corner, same three-step instructions as the quickstart card. Form fields stay unchanged (WiFi SSID dropdown, password field, BTC address field, optional pool selector). Single HTML template file in the NMMiner source.</p>
+<h3 id="53-explicit-firmware-non-goals-for-v1">5.3 Explicit Firmware Non-Goals for v1</h3>
+<ul>
+<li>No new mining features or optimizations (use NMMiner&rsquo;s hashrate as-is)</li>
+<li>No OTA update support, remote management, telemetry, or analytics</li>
+<li>No button-driven on-device menu beyond what NMMiner ships with</li>
+<li>No screen-saver rotation beyond the four mascot states</li>
+<li>No sound (the CYD board has no speaker)</li>
+<li>No upstreaming changes back to NMMiner (private fork; no obligation)</li>
+</ul>
+<h3 id="54-build-flash-workflow">5.4 Build &amp; Flash Workflow</h3>
+<ol>
+<li><strong>One-time toolchain setup</strong> — install PlatformIO, clone fork, confirm the board builds and flashes cleanly with stock NMMiner config before applying any SatScratcher changes. Budget 1–2 hours the first time; most of it is driver/port detection.</li>
+<li><strong>Asset pipeline</strong> — PNG mascots at 240×320 (or smaller, centered) get converted to RGB565 C headers via a small Python tool at <code>/firmware/tools/png-to-header.py</code>. Generated headers are committed to the firmware fork.</li>
+<li><strong>Per-batch flash</strong> — plug 8 CYD boards into a powered USB hub, run <code>pio run -t upload --upload-port /dev/ttyUSB&lt;n&gt;</code> per board (or a <code>flash-batch.sh</code> wrapper). Budget ~10 minutes for 8 boards once the rhythm is established.</li>
+<li><strong>Pre-pack verification</strong> — each flashed unit gets plugged in briefly: splash appears, AP SSID is &ldquo;SatScratcher,&rdquo; AP is joinable, config portal loads. ~30s per board. Catches the 1% of boards with bad flash or dead flash chip before they become returns.</li>
+</ol>
+<hr>
+<h2 id="6-channels-pricing-unit-economics">6. Channels, Pricing &amp; Unit Economics</h2>
+<h3 id="61-channel-strategy">6.1 Channel Strategy</h3>
+<p><strong>Primary: <code>satscratcher.shop</code> with Snipcart</strong> — own domain, own brand, best margin, long-term home of the brand.</p>
+<p><strong>Secondary: Etsy listing</strong> — duplicates the product at the same $39 price, launches within a week or two of the site.</p>
+<ul>
+<li><strong>Listing title:</strong> <em>SatScratcher Bitcoin Lottery Miner — Pre-flashed ESP32 Desk Toy, Pixel Art Miner Gift for Crypto Fans</em></li>
+<li><strong>Tags (13 max):</strong> <code>bitcoin miner</code>, <code>nerdminer</code>, <code>esp32</code>, <code>crypto gift</code>, <code>bitcoin lottery</code>, <code>solo miner</code>, <code>lottery ticket</code>, <code>desk toy</code>, <code>pixel art</code>, <code>bitcoin gift</code>, <code>cyberpunk</code>, <code>novelty gift</code>, <code>nerd gift</code></li>
+<li><strong>Photos (10 slots):</strong> (1) hero device shot with Scratching mascot on screen, (2) styled desk scene for scale, (3) Info Card metadata graphic, (4) what&rsquo;s-in-the-box flatlay, (5) display closeup, (6–10) the four mascot states and any social proof</li>
+<li><strong>Shop announcement:</strong> <em>&ldquo;Pre-flashed Bitcoin lottery miners. Mine Bitcoin. Win (maybe). Look cool regardless. One human, one workshop, ships within 2 business days.&rdquo;</em></li>
+<li><strong>Shop policies:</strong> 30-day returns mirroring the site policy; ships from US; processing time 1–3 business days</li>
+</ul>
+<p><strong>Tertiary / opportunistic (post-launch only):</strong></p>
+<ul>
+<li><strong>eBay</strong> — if Etsy produces signal, list on the same terms with slightly more spec-oriented copy</li>
+<li><strong>Tindie</strong> — nerd/maker audience, high trust, low volume. Good fit for the &ldquo;pre-flashed with custom firmware&rdquo; positioning. Consider after the first 20 sales</li>
+<li><strong>Amazon</strong> — <strong>explicit non-goal for beer money.</strong> Requires seller account, FBA logistics, and defending against Chinese sellers who will copy the listing photos</li>
+<li><strong>Reddit</strong> (r/Bitcoin, r/nerdminer, r/EDC, r/battlestations), <strong>TikTok, Instagram</strong> — treat as marketing surfaces, not channels. No paid spend in v1</li>
+</ul>
+<h3 id="62-unit-economics">6.2 Unit Economics</h3>
+<p><strong>Fulfillment cost per unit:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Line item</th>
+<th>Cost</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CYD board + case (AliExpress)</td>
+<td>$14.00</td>
+</tr>
+<tr>
+<td>Padded USPS mailer (bulk)</td>
+<td>$0.40</td>
+</tr>
+<tr>
+<td>MOO 2-sided quickstart card</td>
+<td>$0.35</td>
+</tr>
+<tr>
+<td>USPS First-Class padded mailer label (up to 8 oz)</td>
+<td>$4.50</td>
+</tr>
+<tr>
+<td>Jason&rsquo;s time flashing + packing (~5 min/unit)</td>
+<td>unpriced</td>
+</tr>
+<tr>
+<td><strong>Fulfillment subtotal</strong></td>
+<td><strong>$19.25</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Platform fees (per sale at $39 flat pricing):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Channel</th>
+<th>Fees</th>
+<th>Effective take</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Site</td>
+<td>Snipcart 2% + Stripe 2.9% + $0.30</td>
+<td>~$2.21 (5.7%)</td>
+</tr>
+<tr>
+<td>Etsy</td>
+<td>Etsy listing $0.20 + transaction 6.5% + payment processing 3% + $0.25</td>
+<td>~$4.30 (11.0%)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Net margin per unit at $39 flat pricing:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Channel</th>
+<th>Sale price</th>
+<th>Fulfillment</th>
+<th>Fees</th>
+<th>Net margin</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Site</td>
+<td>$39.00</td>
+<td>$19.25</td>
+<td>$2.21</td>
+<td><strong>$17.54</strong></td>
+</tr>
+<tr>
+<td>Etsy</td>
+<td>$39.00</td>
+<td>$19.25</td>
+<td>$4.30</td>
+<td><strong>$15.45</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Volume targets:</strong></p>
+<ul>
+<li><strong>Success bar:</strong> 5 sales per month across channels. Below this, reassess positioning or pause.</li>
+<li><strong>Aspirational:</strong> 20 sales per month. At roughly $330/mo net, this is comfortable beer money.</li>
+<li><strong>Above 50/mo:</strong> revisit flash-to-order assumption and consider moving to a small batch model.</li>
+</ul>
+<h3 id="63-pricing-philosophy">6.3 Pricing Philosophy</h3>
+<ul>
+<li><strong>One flat price across all channels.</strong> $39. No variants, no sales, no discount codes in v1.</li>
+<li><strong>Never race Amazon to the bottom.</strong> Amazon competitors live at $30–40 for the same board with stock firmware. The SatScratcher premium is the brand, the guide, the support, and the cat. Buyers who want the cheapest option should buy from Amazon, and that is fine.</li>
+<li><strong>If $39 doesn&rsquo;t move units after a month</strong>, the lever is not price. It&rsquo;s photos and listing copy. Drop price only as a last resort.</li>
+</ul>
+<h3 id="64-shipping-strategy">6.4 Shipping Strategy</h3>
+<ul>
+<li><strong>Domestic only for v1.</strong> US padded mailer, USPS First-Class, ~$4.50 flat rate built into the product price (&ldquo;free shipping&rdquo; reads better in listings)</li>
+<li><strong>International</strong> handled as a manual quote via a <code>mailto:</code> link in the footer. No real international shipping logic in Snipcart for v1</li>
+<li><strong>Etsy international</strong> — allow it, set international shipping to cover actual USPS First-Class International (~$18–22 to most countries). Etsy buyers expect this</li>
+</ul>
+<hr>
+<h2 id="7-repository-structure">7. Repository Structure</h2>
+<pre><code>/home/jason/satscratcher/
+├── README.md                              Top-level project overview
+├── .gitignore
+├── brandingexample.jpeg                   Jason's original reference sheet
+│
+├── docs/
+│   ├── superpowers/
+│   │   └── specs/
+│   │       └── 2026-04-09-satscratcher-design.md   This document
+│   ├── satscratcher-design.pdf            Branded PDF render of this doc
+│   ├── branding-guide.md                  Brand system reference (extract of §2)
+│   ├── unit-economics.md                  Pricing/margin detail (extract of §6)
+│   └── copy/
+│       ├── site.md                        Site hero, product, how-it-works, FAQ
+│       ├── etsy-listing.md                Etsy title, tags, description
+│       ├── quickstart-card.md             Exact words on the physical card
+│       └── support-email-templates.md
+│
+├── site/                                  Eleventy static site
+│   ├── package.json
+│   ├── .eleventy.js
+│   ├── .env.example                       Snipcart public key placeholder
+│   ├── README.md
+│   └── src/
+│       ├── _data/site.js
+│       ├── _includes/
+│       │   ├── layouts/
+│       │   │   ├── base.njk
+│       │   │   └── page.njk
+│       │   └── partials/
+│       │       ├── topbar.njk
+│       │       ├── footer.njk
+│       │       ├── product-card.njk
+│       │       ├── faq-accordion.njk
+│       │       └── mascot.njk
+│       ├── assets/
+│       │   ├── css/
+│       │   │   ├── critical.css
+│       │   │   ├── styles.css
+│       │   │   └── tokens.css
+│       │   ├── js/snipcart-lazy.js
+│       │   ├── fonts/
+│       │   │   ├── PressStart2P-Regular.woff2
+│       │   │   ├── Inter-Regular.woff2
+│       │   │   ├── Inter-Medium.woff2
+│       │   │   └── Inter-Bold.woff2
+│       │   └── img/
+│       │       ├── mascot/{neutral,scratching,winning,losing}.png
+│       │       ├── logo/{primary,compact,wordmark,favicon}.png
+│       │       ├── product/{hero,styled-desk,whats-in-box,display-closeup}.jpg
+│       │       └── decor/{pixel-coin,scratch-panel}.png
+│       ├── index.njk
+│       ├── guide/
+│       │   ├── index.njk
+│       │   ├── quickstart.md
+│       │   ├── get-a-bitcoin-address.md
+│       │   ├── what-if-i-win.md
+│       │   └── troubleshooting.md
+│       ├── faq.md
+│       ├── terms.md
+│       ├── privacy.md
+│       └── shipping-and-returns.md
+│
+├── firmware/                              Assets + tools that feed the fork
+│   ├── README.md                          Links to fork, build/flash instructions
+│   ├── assets-source/
+│   │   ├── splash.png
+│   │   ├── mascot-neutral.png
+│   │   ├── mascot-scratching-01.png
+│   │   ├── mascot-scratching-02.png
+│   │   ├── mascot-winning.png
+│   │   └── mascot-losing.png
+│   └── tools/
+│       ├── png-to-header.py               PNG → RGB565 C header
+│       └── flash-batch.sh                 Batch flash wrapper
+│
+├── print/                                 Print-ready files for MOO
+│   └── quickstart-card/
+│       ├── front.pdf
+│       ├── back.pdf
+│       ├── front.svg
+│       └── back.svg
+│
+└── build/                                 PDF render pipeline
+    ├── fonts/                             Bundled fonts for the PDF
+    ├── template.html.j2                   Jinja2 HTML template
+    └── render.py                          Markdown → HTML → PDF pipeline
+</code></pre>
+<p><strong>The firmware fork is a separate GitHub repo</strong> at <code>github.com/jasonpersinger/NMMiner-SatScratcher</code>. This main repo&rsquo;s <code>/firmware/</code> directory holds only the source art, pipeline tools, and build documentation — the actual C code lives in the fork. This keeps the main repo focused on brand/content/site work (frequent changes) and isolates firmware (rare, discrete updates).</p>
+<hr>
+<h2 id="appendix-a-market-research-summary">Appendix A — Market Research Summary</h2>
+<p>Conducted 2026-04-09 during brainstorming. Key findings:</p>
+<ul>
+<li><strong>Etsy has no assembled NerdMiner devices.</strong> Every Etsy result for &ldquo;nerdminer&rdquo; and similar terms is accessories — 3D-printed stands, cases, display mounts. This confirms the market gap SatScratcher is addressing.</li>
+<li><strong>Amazon and eBay are saturated</strong> with pre-flashed units from Chinese sellers (Heltec, DIYmalls, MinerXpert, Altair) marketed as &ldquo;BTC lottery&rdquo; or &ldquo;lucky miner&rdquo; gifts. The product category exists and has buyers; the opening is the channel (Etsy) and the presentation, not the concept.</li>
+<li><strong>Dedicated hobbyist storefronts exist:</strong> <code>powermining.io</code>, <code>nerdminers.com</code>, <code>bitronics.store</code>, <code>getlottominer.com</code>, <code>solosatoshi.com</code>, <code>cryptominerbros.com</code>, <code>bitcoinstuffstore.com</code>. &ldquo;Lotto Miner&rdquo; is already a competitor brand name; &ldquo;SatScratcher&rdquo; is unclaimed in the current market.</li>
+<li><strong>Hash rate claims vary wildly.</strong> Mainline NerdMiner v2 on T-Display S3 does ~55–78 KH/s. The CYD board with NMMiner is where the &ldquo;1000 KH/s&rdquo; Amazon claims come from. This is a marketing number, not a competitive moat — at current Bitcoin network difficulty, the honest odds are effectively zero regardless of which number you put on the box.</li>
+<li><strong>The marketing language is already cringe.</strong> Listings routinely claim &ldquo;2000% win boost,&rdquo; &ldquo;lucky miner,&rdquo; and similar. The SatScratcher brand&rsquo;s honest voice is directly contrarian to this and is a real positioning lever.</li>
+</ul>
+<h2 id="appendix-b-decisions-log">Appendix B — Decisions Log</h2>
+<table>
+<thead>
+<tr>
+<th>Decision</th>
+<th>Resolved</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Board model</td>
+<td>CYD (ESP32-2432S028R)</td>
+<td>2x cheaper than T-Display S3, bigger display</td>
+</tr>
+<tr>
+<td>Firmware base</td>
+<td>NMMiner</td>
+<td>Better hash rate on CYD; mainline NerdMiner v2 has better market recognition but worse CYD support</td>
+</tr>
+<tr>
+<td>Fork strategy</td>
+<td>Direct GitHub fork</td>
+<td>Simpler than submodule+patches for beer-money scope</td>
+</tr>
+<tr>
+<td>Primary audience</td>
+<td>D (novelty/curiosity) + A (gift buyer) secondary</td>
+<td>B (maxi self-buyer) and C (tinkerer) ruled out</td>
+</tr>
+<tr>
+<td>Channels</td>
+<td>Site primary + Etsy + future marketplaces</td>
+<td>Dual-channel from launch</td>
+</tr>
+<tr>
+<td>Domain</td>
+<td>satscratcher.shop</td>
+<td>Matches nixkey portfolio pattern; .com as optional defensive redirect</td>
+</tr>
+<tr>
+<td>Pricing</td>
+<td>$39 flat across all channels</td>
+<td>Consistency over margin optimization</td>
+</tr>
+<tr>
+<td>Launch ambition</td>
+<td>Soft Approach B</td>
+<td>Lean MVP + splash screen + MOO card; defer video loop, variants, blog</td>
+</tr>
+<tr>
+<td>Packaging</td>
+<td>Padded mailer + device in case + card</td>
+<td>No branded outer box</td>
+</tr>
+<tr>
+<td>Success target</td>
+<td>5/mo bar, 20/mo aspirational</td>
+<td>Beer money, not scaling curve</td>
+</tr>
+</tbody>
+</table>
+<h2 id="appendix-c-open-questions-risks">Appendix C — Open Questions &amp; Risks</h2>
+<ul>
+<li><strong>NMMiner license</strong> needs verification (assumed MIT) before commercial use of a modified fork</li>
+<li><strong>PlatformIO + CYD toolchain setup</strong> is the single largest launch-blocker risk; first-time setup can be finicky</li>
+<li><strong>Etsy offsite-ads threshold</strong> policy needs verification at listing time; forced enrollment could change unit economics at the $10K/yr revenue level</li>
+<li><strong>Product photography</strong> is self-shot in v1 and will be a noticeable quality ceiling on the listing; can be upgraded later</li>
+<li><strong>Support volume</strong> at v1 is one human answering email; if volume grows past beer-money level this becomes a scaling bottleneck</li>
+</ul>
+</div>
+
+</body>
+</html>

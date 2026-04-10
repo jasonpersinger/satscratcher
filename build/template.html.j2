@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{ title }}</title>
+<style>
+/* -------------------------------------------------- */
+/*  Fonts — embedded from local TTF                   */
+/* -------------------------------------------------- */
+@font-face {
+  font-family: "Press Start 2P";
+  src: url("{{ font_dir }}/PressStart2P-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("{{ font_dir }}/Inter-Regular.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("{{ font_dir }}/Inter-Italic.ttf") format("truetype");
+  font-weight: 100 900;
+  font-style: italic;
+}
+
+/* -------------------------------------------------- */
+/*  Design tokens                                     */
+/* -------------------------------------------------- */
+:root {
+  --bg: #252627;
+  --bg-elevated: #2E3032;
+  --bg-deep: #1B1C1D;
+  --text: #CDD3D5;
+  --text-dim: #8A8F91;
+  --primary: #FB6107;
+  --jackpot: #F5A623;
+  --signal: #1B998B;
+  --danger: #C2402C;
+
+  --display: "Press Start 2P", "Courier New", monospace;
+  --body: "Inter", -apple-system, system-ui, sans-serif;
+}
+
+/* -------------------------------------------------- */
+/*  Page geometry                                     */
+/* -------------------------------------------------- */
+@page {
+  size: Letter;
+  margin: 18mm 16mm 20mm 16mm;
+  background: var(--bg);
+
+  @bottom-left {
+    content: "SATSCRATCHER";
+    font-family: var(--display);
+    font-size: 6pt;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+  }
+  @bottom-center {
+    content: "Design & Business Plan";
+    font-family: var(--body);
+    font-size: 8pt;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+  @bottom-right {
+    content: counter(page);
+    font-family: var(--display);
+    font-size: 7pt;
+    color: var(--jackpot);
+  }
+}
+
+@page cover {
+  margin: 0;
+  background: var(--bg);
+  @bottom-left { content: none; }
+  @bottom-center { content: none; }
+  @bottom-right { content: none; }
+}
+
+@page toc {
+  @bottom-left { content: "SATSCRATCHER"; font-family: var(--display); font-size: 6pt; color: var(--text-dim); letter-spacing: 0.08em; }
+  @bottom-center { content: "Table of Contents"; font-family: var(--body); font-size: 8pt; color: var(--text-dim); font-style: italic; }
+  @bottom-right { content: counter(page, lower-roman); font-family: var(--display); font-size: 7pt; color: var(--jackpot); }
+}
+
+/* -------------------------------------------------- */
+/*  Base                                              */
+/* -------------------------------------------------- */
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 10.5pt;
+  line-height: 1.55;
+  margin: 0;
+  padding: 0;
+  -weasy-font-feature-settings: "kern", "liga", "ss01";
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* -------------------------------------------------- */
+/*  Cover page                                        */
+/* -------------------------------------------------- */
+.cover {
+  page: cover;
+  page-break-after: always;
+  /* Letter page size, explicit — weasyprint ignores vh in paginated media */
+  width: 215.9mm;
+  height: 279.4mm;
+  position: relative;
+  padding: 28mm 20mm 24mm 20mm;
+  background: var(--bg);
+  display: block;
+  overflow: hidden;
+}
+
+.cover::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4mm;
+  background: var(--primary);
+}
+.cover::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 4mm;
+  background: var(--jackpot);
+}
+
+.cover-eyebrow {
+  font-family: var(--display);
+  font-size: 9pt;
+  color: var(--jackpot);
+  letter-spacing: 0.12em;
+  margin-top: 4mm;
+  margin-bottom: 14mm;
+}
+
+.cover-title {
+  font-family: var(--display);
+  font-size: 26pt;
+  color: var(--primary);
+  line-height: 1.2;
+  margin: 0;
+  letter-spacing: -0.02em;
+  /* Leave room for info card pinned to the right — Press Start 2P is
+     monospace and can't wrap mid-word, so the title has to actually fit */
+  max-width: 120mm;
+}
+
+.cover-title .tiny {
+  display: block;
+  font-size: 12pt;
+  color: var(--text);
+  margin-top: 8mm;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+
+.cover-tagline {
+  font-family: var(--display);
+  font-size: 11pt;
+  color: var(--text);
+  line-height: 1.8;
+  margin-top: 30mm;
+  padding: 8mm;
+  border: 2px solid var(--primary);
+  background: var(--bg-elevated);
+  max-width: 130mm;
+}
+
+.cover-tagline .win {
+  color: var(--jackpot);
+}
+
+.cover-meta {
+  position: absolute;
+  bottom: 22mm;
+  left: 20mm;
+  right: 20mm;
+  display: flex;
+  justify-content: space-between;
+  gap: 4mm;
+  font-family: var(--display);
+  font-size: 6.5pt;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.cover-meta div { line-height: 1.8; min-width: 0; }
+.cover-meta strong {
+  color: var(--signal);
+  font-weight: normal;
+  display: block;
+  font-size: 5.5pt;
+  margin-bottom: 1mm;
+}
+
+.cover-infocard {
+  position: absolute;
+  right: 20mm;
+  top: 48mm;
+  width: 62mm;
+  padding: 7mm;
+  background: var(--bg-elevated);
+  border-left: 3px solid var(--primary);
+  font-family: var(--display);
+  font-size: 6.5pt;
+  line-height: 2.2;
+  color: var(--text);
+}
+.cover-infocard .row { display: block; }
+.cover-infocard .label { color: var(--text-dim); }
+.cover-infocard .value { color: var(--jackpot); }
+.cover-infocard .title {
+  display: block;
+  font-size: 9pt;
+  color: var(--primary);
+  margin-bottom: 4mm;
+  letter-spacing: 0.05em;
+}
+
+/* -------------------------------------------------- */
+/*  Table of Contents                                 */
+/* -------------------------------------------------- */
+.toc {
+  page: toc;
+  page-break-after: always;
+  padding-top: 8mm;
+}
+
+.toc h1 {
+  font-family: var(--display);
+  font-size: 18pt;
+  color: var(--primary);
+  margin: 0 0 3mm 0;
+  letter-spacing: -0.01em;
+}
+
+.toc-sub {
+  font-family: var(--body);
+  font-size: 10pt;
+  color: var(--text-dim);
+  font-style: italic;
+  margin-bottom: 10mm;
+}
+
+.toc ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: toc-counter;
+}
+
+.toc li {
+  display: block;
+  font-family: var(--body);
+  font-size: 11pt;
+  color: var(--text);
+  padding: 3mm 0;
+  border-bottom: 1px dashed var(--bg-elevated);
+  counter-increment: toc-counter;
+  position: relative;
+  padding-left: 12mm;
+}
+
+.toc li::before {
+  content: counter(toc-counter, decimal-leading-zero);
+  font-family: var(--display);
+  font-size: 9pt;
+  color: var(--jackpot);
+  position: absolute;
+  left: 0;
+  top: 3.5mm;
+}
+
+.toc li .title-text { color: var(--text); }
+.toc li .page-ref {
+  float: right;
+  font-family: var(--display);
+  font-size: 9pt;
+  color: var(--signal);
+}
+
+/* -------------------------------------------------- */
+/*  Body content                                      */
+/* -------------------------------------------------- */
+.body-content {
+  padding-top: 2mm;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--display);
+  font-weight: normal;
+  color: var(--text);
+  line-height: 1.35;
+  letter-spacing: -0.005em;
+}
+
+h2 {
+  font-size: 15pt;
+  color: var(--primary);
+  margin: 0 0 4mm 0;
+  padding-bottom: 3mm;
+  border-bottom: 2px solid var(--primary);
+  page-break-before: always;
+  page-break-after: avoid;
+}
+
+.body-content > h2:first-of-type {
+  page-break-before: avoid;
+}
+
+h3 {
+  font-size: 11pt;
+  color: var(--jackpot);
+  margin: 7mm 0 2mm 0;
+  page-break-after: avoid;
+}
+
+h4 {
+  font-size: 9pt;
+  color: var(--signal);
+  margin: 5mm 0 1mm 0;
+  letter-spacing: 0.02em;
+  page-break-after: avoid;
+}
+
+p {
+  margin: 0 0 3mm 0;
+  color: var(--text);
+  orphans: 3;
+  widows: 3;
+}
+
+strong { color: var(--text); font-weight: 700; }
+em { color: var(--jackpot); font-style: italic; }
+
+a {
+  color: var(--primary);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--primary);
+}
+
+/* -------------------------------------------------- */
+/*  Lists                                             */
+/* -------------------------------------------------- */
+ul, ol {
+  margin: 1mm 0 3mm 0;
+  padding-left: 6mm;
+  color: var(--text);
+}
+ul li, ol li {
+  margin-bottom: 1mm;
+}
+ul li::marker {
+  color: var(--primary);
+  content: "▸ ";
+}
+ol li::marker {
+  color: var(--jackpot);
+  font-family: var(--display);
+  font-size: 9pt;
+}
+
+/* -------------------------------------------------- */
+/*  Blockquotes — used for voice samples              */
+/* -------------------------------------------------- */
+blockquote {
+  margin: 4mm 0;
+  padding: 4mm 6mm;
+  background: var(--bg-elevated);
+  border-left: 3px solid var(--signal);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 10pt;
+  line-height: 1.65;
+  page-break-inside: avoid;
+}
+blockquote > :first-child { margin-top: 0; }
+blockquote > :last-child { margin-bottom: 0; }
+blockquote h1 {
+  font-family: var(--display);
+  font-size: 11pt;
+  color: var(--jackpot);
+  margin: 0 0 3mm 0;
+}
+blockquote strong { color: var(--primary); }
+blockquote code { background: var(--bg-deep); }
+
+/* -------------------------------------------------- */
+/*  Code blocks                                       */
+/* -------------------------------------------------- */
+code {
+  font-family: "Inter", monospace;
+  background: var(--bg-elevated);
+  color: var(--jackpot);
+  padding: 0.5mm 1.5mm;
+  border-radius: 1mm;
+  font-size: 9pt;
+}
+
+pre {
+  background: var(--bg-deep);
+  border-left: 3px solid var(--primary);
+  padding: 4mm;
+  margin: 3mm 0;
+  font-family: "Inter", monospace;
+  font-size: 7pt;
+  line-height: 1.45;
+  color: var(--text);
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  page-break-inside: avoid;
+}
+pre code {
+  background: transparent;
+  color: var(--text);
+  padding: 0;
+  font-size: inherit;
+}
+
+/* -------------------------------------------------- */
+/*  Tables                                            */
+/* -------------------------------------------------- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 3mm 0 5mm 0;
+  font-size: 9pt;
+  page-break-inside: avoid;
+}
+
+th, td {
+  padding: 2mm 3mm;
+  text-align: left;
+  border-bottom: 1px solid var(--bg-elevated);
+  vertical-align: top;
+}
+
+th {
+  font-family: var(--display);
+  font-size: 7pt;
+  color: var(--jackpot);
+  background: var(--bg-elevated);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  border-bottom: 2px solid var(--primary);
+}
+
+td code {
+  font-size: 8pt;
+  background: var(--bg-deep);
+}
+
+/* -------------------------------------------------- */
+/*  HR                                                */
+/* -------------------------------------------------- */
+hr {
+  border: none;
+  height: 1px;
+  background: var(--bg-elevated);
+  margin: 6mm 0;
+}
+
+/* -------------------------------------------------- */
+/*  Executive Summary callout                         */
+/* -------------------------------------------------- */
+.body-content h2:first-of-type + p,
+.body-content h2:first-of-type + p + p {
+  color: var(--text);
+  font-size: 10pt;
+}
+</style>
+</head>
+<body>
+
+<!-- ============= COVER PAGE ============= -->
+<section class="cover">
+  <div class="cover-eyebrow">&#9608;&#9608;&#9608;&nbsp;&nbsp;A DESK TOY LOTTERY MINER&nbsp;&nbsp;&#9608;&#9608;&#9608;</div>
+
+  <h1 class="cover-title">
+    SatScratcher
+    <span class="tiny">Design &amp; Business Plan</span>
+  </h1>
+
+  <div class="cover-infocard">
+    <span class="title">INFO CARD</span>
+    <span class="row"><span class="label">HASHRATE:</span><br><span class="value">BASICALLY NOTHING</span></span>
+    <span class="row"><span class="label">ODDS:</span><br><span class="value">WORSE THAN TERRIBLE</span></span>
+    <span class="row"><span class="label">VIBES:</span><br><span class="value">IMMACULATE</span></span>
+  </div>
+
+  <div class="cover-tagline">
+    MINE BITCOIN.<br>
+    WIN <span class="win">(MAYBE)</span>.<br>
+    LOOK COOL REGARDLESS.
+  </div>
+
+  <div class="cover-meta">
+    <div>
+      <strong>VERSION</strong>
+      {{ version }}
+    </div>
+    <div>
+      <strong>DATE</strong>
+      {{ date }}
+    </div>
+    <div>
+      <strong>DOMAIN</strong>
+      {{ domain }}
+    </div>
+    <div>
+      <strong>REPO</strong>
+      {{ repo }}
+    </div>
+  </div>
+</section>
+
+<!-- ============= TABLE OF CONTENTS ============= -->
+<section class="toc">
+  <h1>CONTENTS</h1>
+  <div class="toc-sub">Seven sections, plus appendices. Read them or don't.</div>
+  <ol>
+    <li><span class="title-text">Executive Summary</span></li>
+    <li><span class="title-text">Overview &amp; Product Definition</span></li>
+    <li><span class="title-text">Brand System</span></li>
+    <li><span class="title-text">Storefront Site</span></li>
+    <li><span class="title-text">Content — Setup Guide, FAQ &amp; Quickstart Card</span></li>
+    <li><span class="title-text">Firmware Customization</span></li>
+    <li><span class="title-text">Channels, Pricing &amp; Unit Economics</span></li>
+    <li><span class="title-text">Repository Structure</span></li>
+    <li><span class="title-text">Appendix A — Market Research Summary</span></li>
+    <li><span class="title-text">Appendix B — Decisions Log</span></li>
+    <li><span class="title-text">Appendix C — Open Questions &amp; Risks</span></li>
+  </ol>
+</section>
+
+<!-- ============= BODY ============= -->
+<div class="body-content">
+{{ body_html | safe }}
+</div>
+
+</body>
+</html>

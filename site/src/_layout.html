@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+{{> head}}
+</head>
+<body class="{{bodyClass}}">
+  <a class="skip-link" href="#main">Skip to content</a>
+  {{> topbar}}
+  <main id="main">
+    {{content}}
+  </main>
+  {{> footer}}
+  {{> snipcart}}
+  <script src="/assets/js/topbar-scroll.js" defer></script>
+  <script src="/assets/js/faq-accordion.js" defer></script>
+  <script src="/assets/js/snipcart-lazy.js" defer></script>
+</body>
+</html>

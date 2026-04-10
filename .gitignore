@@ -1,0 +1,23 @@
+# Python (build/ PDF pipeline)
+.venv/
+__pycache__/
+*.pyc
+
+# Node (site/)
+node_modules/
+site/dist/
+site/.env
+site/test-results/
+site/playwright-report/
+
+# Generated/transient previews
+tmp/
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Editor noise
+.vscode/
+.idea/
+*.swp
