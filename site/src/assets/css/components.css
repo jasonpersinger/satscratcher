@@ -15,21 +15,15 @@
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
   min-width: 0;
   color: var(--text);
   text-decoration: none;
 }
 
-.brand img {
-  width: 36px;
-  height: 26px;
-  object-fit: cover;
-}
-
 .brand span {
   font-family: var(--display);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
+  color: var(--primary);
 }
 
 .site-nav {
@@ -340,9 +334,13 @@
   gap: 28px;
 }
 
-.footer-brand img {
-  width: 220px;
+.footer-wordmark {
+  display: inline-block;
   margin-bottom: 12px;
+  color: var(--primary);
+  font-family: var(--display);
+  font-size: 1rem;
+  text-decoration: none;
 }
 
 .site-footer h2 {
@@ -397,10 +395,6 @@
 @media (max-width: 640px) {
   .topbar {
     grid-template-columns: 1fr auto;
-  }
-
-  .brand span {
-    display: none;
   }
 
   h1 {

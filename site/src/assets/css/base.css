@@ -23,7 +23,6 @@ img {
 }
 
 img[src*="/mascot/"],
-img[src*="/logo/"],
 img[src*="/decor/"] {
   image-rendering: pixelated;
 }
