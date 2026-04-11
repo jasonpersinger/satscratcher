@@ -1,0 +1,79 @@
+/* ============================================================
+   Components
+   ============================================================ */
+
+/* ---- Topbar ---- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(37, 38, 39, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--dur-med) var(--ease);
+}
+.topbar[data-scrolled="true"] {
+  border-bottom-color: var(--bg-elevated);
+}
+.topbar__inner {
+  height: var(--topbar-h);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+}
+.topbar__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+.topbar__logo { width: 32px; height: 32px; }
+.topbar__wordmark {
+  font-family: var(--display);
+  font-size: var(--fs-sm);
+  color: var(--primary);
+  letter-spacing: 0.02em;
+}
+.topbar__nav {
+  margin-left: auto;
+  display: flex;
+  gap: var(--sp-5);
+  font-family: var(--body);
+  font-weight: 500;
+  font-size: var(--fs-sm);
+}
+.topbar__nav a {
+  color: var(--text);
+  padding: var(--sp-2) 0;
+  border-bottom: 2px solid transparent;
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+.topbar__nav a:hover { color: var(--primary); border-bottom-color: var(--primary); }
+
+.topbar__cart {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-4);
+  background: var(--primary);
+  color: var(--bg);
+  font-family: var(--display);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.04em;
+  border-radius: 2px;
+  transition: background var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+}
+.topbar__cart:hover { background: var(--jackpot); transform: translateY(-1px); }
+.topbar__cart-count {
+  display: inline-block;
+  min-width: 18px;
+  padding: 2px 6px;
+  background: var(--bg);
+  color: var(--jackpot);
+  border-radius: 2px;
+  font-size: 10px;
+}
+
+@media (max-width: 680px) {
+  .topbar__nav { display: none; }
+  .topbar__wordmark { display: none; }
+}
