@@ -134,3 +134,77 @@
   .footer__inner { grid-template-columns: 1fr; }
   .footer__cols { grid-template-columns: 1fr 1fr; }
 }
+
+/* ---- Buttons ---- */
+.btn {
+  display: inline-block;
+  padding: var(--sp-4) var(--sp-5);
+  font-family: var(--display);
+  font-size: var(--fs-sm);
+  letter-spacing: 0.04em;
+  border-radius: 2px;
+  transition: background var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease),
+              transform var(--dur-fast) var(--ease);
+}
+.btn--primary {
+  background: var(--primary);
+  color: var(--bg);
+}
+.btn--primary:hover { background: var(--jackpot); transform: translateY(-2px); }
+.btn--ghost {
+  color: var(--text);
+  border: 2px solid var(--bg-elevated);
+}
+.btn--ghost:hover { border-color: var(--primary); color: var(--primary); }
+
+/* ---- Hero ---- */
+.hero {
+  padding: var(--sp-9) 0 var(--sp-8) 0;
+  background:
+    radial-gradient(ellipse at top right, rgba(251, 97, 7, 0.08), transparent 60%),
+    var(--bg);
+}
+.hero__inner {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: var(--sp-7);
+  align-items: center;
+}
+.hero__eyebrow {
+  font-family: var(--display);
+  font-size: var(--fs-xs);
+  color: var(--jackpot);
+  letter-spacing: 0.08em;
+  margin-bottom: var(--sp-5);
+}
+.hero__headline {
+  font-size: var(--fs-xxl);
+  line-height: 1.25;
+  color: var(--primary);
+  margin: 0 0 var(--sp-5) 0;
+}
+.hero__win { color: var(--jackpot); }
+.hero__subline {
+  font-size: var(--fs-md);
+  max-width: 520px;
+  margin-bottom: var(--sp-6);
+}
+.hero__cta { display: flex; gap: var(--sp-4); flex-wrap: wrap; }
+.hero__device { position: relative; }
+.hero__img {
+  width: 100%;
+  max-width: 480px;
+  margin-left: auto;
+  background: var(--bg-elevated);
+  border: 2px solid var(--primary);
+  border-radius: 4px;
+}
+.hero__coin { position: absolute; }
+.hero__coin--a { top: -8px; right: 40px; }
+.hero__coin--b { bottom: 24px; right: -8px; }
+
+@media (max-width: 860px) {
+  .hero__inner { grid-template-columns: 1fr; }
+  .hero__device { order: -1; }
+}
