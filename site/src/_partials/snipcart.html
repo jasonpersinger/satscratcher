@@ -1,0 +1,69 @@
+<!-- Snipcart v3.7.1 — lazy-loaded on first user interaction, with a 2750ms timeout fallback.
+     Same pattern as nixkey.shop. The script/link tags are only added once the user touches the page.
+     Public key is injected by build.js from SNIPCART_PUBLIC_KEY env var. -->
+<script>
+  window.SnipcartSettings = {
+    publicApiKey: "{{SNIPCART_PUBLIC_KEY}}",
+    loadStrategy: "on-user-interaction",
+    loadCSS: true,
+    modalStyle: "side",
+    currency: "usd",
+    timeoutDuration: 2750,
+    version: "3.7.1"
+  };
+  (function () {
+    var c, d = false, s, w = window, o = w.SnipcartSettings;
+    if (!o.version) o.version = "3.0";
+    s = ["focus", "mouseover", "touchmove", "scroll", "keydown"];
+    w.LoadSnipcart = loadSnipcart;
+    document.readyState === "loading"
+      ? document.addEventListener("DOMContentLoaded", setup)
+      : setup();
+
+    function setup() {
+      if (o.loadStrategy) {
+        if (o.loadStrategy === "on-user-interaction") {
+          s.forEach(function (t) { document.addEventListener(t, loadSnipcart); });
+          setTimeout(loadSnipcart, o.timeoutDuration);
+        }
+      } else {
+        loadSnipcart();
+      }
+    }
+
+    function loadSnipcart() {
+      if (d) return;
+      d = true;
+      s.forEach(function (t) { document.removeEventListener(t, loadSnipcart); });
+      var e = document.getElementsByTagName("head")[0];
+      var r = document.querySelector("#snipcart");
+      var i = document.querySelector('script[src^="https://cdn.snipcart.com"]');
+      var n = document.querySelector('link[href^="https://cdn.snipcart.com"]');
+      if (!r) {
+        r = document.createElement("div");
+        r.id = "snipcart";
+        r.setAttribute("hidden", "true");
+        document.body.appendChild(r);
+      }
+      c = document.createElement("div");
+      c.className = "snipcart-main-container";
+      c.setAttribute("data-snipcart-modal-style", o.modalStyle || "default");
+      r.appendChild(c);
+      if (o.loadCSS !== false && !n) {
+        n = document.createElement("link");
+        n.rel = "stylesheet";
+        n.type = "text/css";
+        n.href = "https://cdn.snipcart.com/themes/v" + o.version + "/default/snipcart.css";
+        e.appendChild(n);
+      }
+      if (!i) {
+        i = document.createElement("script");
+        i.src = "https://cdn.snipcart.com/themes/v" + o.version + "/default/snipcart.js";
+        i.async = true;
+        i.setAttribute("data-api-key", o.publicApiKey);
+        i.setAttribute("data-config-modal-style", o.modalStyle || "default");
+        e.appendChild(i);
+      }
+    }
+  })();
+</script>
