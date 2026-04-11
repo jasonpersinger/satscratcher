@@ -242,3 +242,96 @@
 @media (max-width: 860px) {
   .what-it-is__grid { grid-template-columns: 1fr; }
 }
+
+/* ---- Product ---- */
+.product { padding: var(--sp-8) 0; background: var(--bg-deep); }
+.product__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-7);
+  align-items: start;
+}
+.product__img {
+  width: 100%;
+  border: 2px solid var(--bg-elevated);
+  border-radius: 4px;
+  background: var(--bg-elevated);
+}
+.product__eyebrow {
+  font-family: var(--display);
+  font-size: var(--fs-xs);
+  color: var(--signal);
+  letter-spacing: 0.08em;
+  margin-bottom: var(--sp-3);
+}
+.product__name {
+  font-size: var(--fs-xl);
+  color: var(--primary);
+  margin-bottom: var(--sp-3);
+}
+.product__tagline { font-size: var(--fs-md); margin-bottom: var(--sp-5); }
+
+/* Info card — the voice sample from the spec */
+.infocard {
+  background: var(--bg);
+  border-left: 3px solid var(--primary);
+  padding: var(--sp-5);
+  margin-bottom: var(--sp-5);
+  font-family: var(--display);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.02em;
+}
+.infocard__title {
+  color: var(--primary);
+  font-size: var(--fs-sm);
+  margin-bottom: var(--sp-3);
+  letter-spacing: 0.06em;
+}
+.infocard__row {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--sp-2) 0;
+  border-bottom: 1px dashed var(--bg-elevated);
+}
+.infocard__row:last-child { border-bottom: none; }
+.infocard__label { color: var(--text-dim); }
+.infocard__val   { color: var(--jackpot); }
+
+.product__price-row {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-4);
+}
+.product__price {
+  font-family: var(--display);
+  font-size: var(--fs-xxl);
+  color: var(--jackpot);
+}
+.product__ship { color: var(--text-dim); font-size: var(--fs-sm); }
+.product__buy { width: 100%; padding: var(--sp-5); font-size: var(--fs-md); }
+
+.product__whats-in-box { margin-top: var(--sp-6); }
+.product__whats-in-box h4 { margin-bottom: var(--sp-3); }
+.box-tiles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-3);
+}
+.box-tile {
+  background: var(--bg);
+  padding: var(--sp-3);
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  text-align: center;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+@media (max-width: 860px) {
+  .product__inner { grid-template-columns: 1fr; }
+  .box-tiles { grid-template-columns: repeat(2, 1fr); }
+}
