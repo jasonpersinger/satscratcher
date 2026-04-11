@@ -1,0 +1,51 @@
+/* ============================================================
+   SatScratcher design tokens
+   Spec: docs/superpowers/specs/2026-04-09-satscratcher-design.md §2.2
+   ============================================================ */
+
+:root {
+  /* Palette */
+  --bg:          #252627;
+  --bg-elevated: #2E3032;
+  --bg-deep:     #1B1C1D;
+  --text:        #CDD3D5;
+  --text-dim:    #8A8F91;
+  --primary:     #FB6107;  /* CTAs, logo, active links */
+  --jackpot:     #F5A623;  /* prices, WIN moments */
+  --signal:      #1B998B;  /* mining-active, success, dividers */
+  --danger:      #C2402C;  /* form errors */
+  --photo-bg:    #FFFFFF;  /* product photography backgrounds only */
+
+  /* Type */
+  --display: "Press Start 2P", "Courier New", monospace;
+  --body:    "Inter", -apple-system, system-ui, sans-serif;
+
+  /* Type scale — mobile-first; clamp() scales up to desktop */
+  --fs-xs:   12px;
+  --fs-sm:   14px;
+  --fs-base: 16px;
+  --fs-md:   18px;
+  --fs-lg:   clamp(20px, 2.5vw, 26px);
+  --fs-xl:   clamp(28px, 4vw, 40px);
+  --fs-xxl:  clamp(36px, 6vw, 64px);
+
+  /* Spacing scale — 4px base */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+  --sp-9: 96px;
+
+  /* Layout */
+  --container-max: 1120px;
+  --topbar-h: 64px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-fast: 120ms;
+  --dur-med:  220ms;
+}
