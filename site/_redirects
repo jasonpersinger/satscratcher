@@ -1,0 +1,13 @@
+# Strip trailing slashes on leaf pages for canonical URLs
+/guide/quickstart/              /guide/quickstart.html              301
+/guide/get-a-bitcoin-address/   /guide/get-a-bitcoin-address.html   301
+/guide/what-if-i-win/           /guide/what-if-i-win.html           301
+/guide/troubleshooting/         /guide/troubleshooting.html         301
+/faq/                           /faq.html                           301
+/terms/                         /terms.html                         301
+/privacy/                       /privacy.html                       301
+/shipping-and-returns/          /shipping-and-returns.html          301
+
+# Courtesy short links
+/setup                          /guide/                             302
+/help                           /guide/troubleshooting.html         302
