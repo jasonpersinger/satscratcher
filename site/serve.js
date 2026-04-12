@@ -31,8 +31,9 @@ const MIME = {
 };
 
 function resolveFile(urlPath) {
-  // Strip query string and decode
-  var clean = decodeURIComponent(urlPath.split('?')[0]);
+  var clean;
+  try { clean = decodeURIComponent(urlPath.split('?')[0]); }
+  catch (_) { return null; }
   // Prevent path traversal — resolve and check it's still inside DIST.
   var candidate = path.normalize(path.join(DIST, clean));
   if (!candidate.startsWith(DIST)) return null;
