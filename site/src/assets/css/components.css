@@ -407,3 +407,67 @@
   color: var(--text);
 }
 .faq__more { margin-top: var(--sp-5); text-align: center; }
+
+/* ---- Page head (guides, legal, faq) ---- */
+.page-head {
+  padding: var(--sp-8) 0 var(--sp-5) 0;
+  border-bottom: 2px solid var(--bg-elevated);
+}
+.page-head h1 { color: var(--primary); margin-bottom: var(--sp-3); }
+.page-head__sub {
+  font-size: var(--fs-md);
+  color: var(--text);
+  max-width: 640px;
+}
+
+/* ---- Guide grid ---- */
+.guide-grid { padding: var(--sp-7) 0; }
+.guide-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-4);
+}
+.guide-card {
+  display: block;
+  background: var(--bg-elevated);
+  padding: var(--sp-5);
+  border-left: 3px solid var(--primary);
+  border-radius: 2px;
+  transition: transform var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+.guide-card:hover { transform: translateY(-2px); border-left-color: var(--jackpot); }
+.guide-card__num {
+  font-family: var(--display);
+  font-size: var(--fs-md);
+  color: var(--jackpot);
+  margin-bottom: var(--sp-3);
+}
+.guide-card h3 { font-size: var(--fs-md); color: var(--text); margin-bottom: var(--sp-2); }
+.guide-card p  { font-size: var(--fs-sm); color: var(--text-dim); margin: 0; }
+@media (max-width: 680px) {
+  .guide-cards { grid-template-columns: 1fr; }
+}
+
+/* ---- Content-page prose (shared by guides, legal, FAQ page) ---- */
+.prose {
+  max-width: 720px;
+  padding: var(--sp-6) 0 var(--sp-8) 0;
+}
+.prose h3 { margin-top: var(--sp-5); }
+.prose p  { font-size: var(--fs-md); line-height: 1.7; }
+.prose ul, .prose ol { margin-bottom: var(--sp-4); }
+.prose li { margin-bottom: var(--sp-2); font-size: var(--fs-md); line-height: 1.7; }
+.prose blockquote {
+  border-left: 3px solid var(--signal);
+  padding: var(--sp-3) var(--sp-5);
+  background: var(--bg-elevated);
+  margin: var(--sp-4) 0;
+}
+.prose .warn {
+  border-left: 3px solid var(--danger);
+  background: var(--bg-elevated);
+  padding: var(--sp-4) var(--sp-5);
+  margin: var(--sp-5) 0;
+}
+.prose a { color: var(--primary); border-bottom: 1px dotted var(--primary); }
+.prose a:hover { color: var(--jackpot); border-bottom-color: var(--jackpot); }
