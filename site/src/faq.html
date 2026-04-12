@@ -1,0 +1,68 @@
+<!--
+title: FAQ
+description: Frequently asked questions about the SatScratcher Bitcoin lottery miner.
+bodyClass: faq-page
+ogPath: /faq.html
+-->
+
+<section class="page-head">
+  <div class="container">
+    <h1>FAQ.</h1>
+    <p class="page-head__sub">Questions we either got asked, or wish we got asked. Links are deep-linkable — share them freely.</p>
+  </div>
+</section>
+
+<section class="container">
+  <div class="faq__list" style="max-width: 800px; padding: var(--sp-6) 0 var(--sp-8) 0;">
+
+    <details class="faq__item" id="q-scam">
+      <summary>Is this a scam?</summary>
+      <p>No, and we'll prove it: we're openly telling you that this thing will not win. Scams promise wins. We promise vibes. The SatScratcher is a real ESP32 Bitcoin miner running open-source firmware (NMMiner). It hashes Bitcoin the same way any other miner does — just very, very slowly.</p>
+    </details>
+
+    <details class="faq__item" id="q-win">
+      <summary>Will I actually win Bitcoin?</summary>
+      <p>Technically: yes, maybe. Practically: no. Mathematically: the odds are roughly one in three hundred billion per block attempt. The Bitcoin network produces a block every ten minutes. We leave the full calculation to you as an exercise.</p>
+    </details>
+
+    <details class="faq__item" id="q-experience">
+      <summary>Do I need to know anything about Bitcoin to use this?</summary>
+      <p>Nope. You need to be able to plug in a USB cable and copy-paste a string of text. We wrote a <a href="/guide/get-a-bitcoin-address.html" class="inline-link">guide</a> that walks you through getting a Bitcoin address in 5 minutes if you've never touched crypto.</p>
+    </details>
+
+    <details class="faq__item" id="q-wins">
+      <summary>What happens if it wins?</summary>
+      <p>We wrote <a href="/guide/what-if-i-win.html" class="inline-link">a whole page about this</a>, because we thought it was funny. Short version: the block reward goes to the address you set up, and you owe taxes on it.</p>
+    </details>
+
+    <details class="faq__item" id="q-power">
+      <summary>How much electricity does this use?</summary>
+      <p>About 1 watt — less than an LED nightlight. Running it 24/7 for a year costs around a dollar in electricity in the US. Cheaper than most hobbies.</p>
+    </details>
+
+    <details class="faq__item" id="q-return">
+      <summary>Can I return it?</summary>
+      <p>Yes. 30 days, undamaged, in the case. Shipping back is on you. We'll refund the purchase price, no hard feelings. We'd rather have happy customers than reluctant owners.</p>
+    </details>
+
+    <details class="faq__item" id="q-amazon">
+      <summary>Is this the same as the ones on Amazon?</summary>
+      <p>The board is similar. The firmware, the branding, the mascot, the setup guide, the quickstart card, and the human who answers support emails are not. You're paying for the thing <em>and</em> the experience of the thing. If you just want a bare board and can handle flashing firmware yourself, Amazon is a valid choice and we won't be offended.</p>
+    </details>
+
+    <details class="faq__item" id="q-heat">
+      <summary>Does it get hot?</summary>
+      <p>Warm, not hot. Safe to leave on 24/7 in a normal room. If it's sitting in direct sunlight inside a sealed case in August, use some judgment.</p>
+    </details>
+
+    <details class="faq__item" id="q-firmware">
+      <summary>Can I flash different firmware?</summary>
+      <p>Yes — it's a standard ESP32-2432S028R ("CYD") board. Whatever firmware you can flash to one of those, you can flash to a SatScratcher. We ship it with a lightly-customized NMMiner build, but you own it.</p>
+    </details>
+
+    <details class="faq__item" id="q-international">
+      <summary>Do you ship internationally?</summary>
+      <p>Not directly from the site yet. Email us and we'll quote you USPS First-Class International. If you're ordering via Etsy, international shipping is already enabled there.</p>
+    </details>
+  </div>
+</section>
