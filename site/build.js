@@ -100,7 +100,10 @@ function loadEnv(envPath) {
 function build(options = {}) {
   const srcDir = options.srcDir || DEFAULT_SRC;
   const distDir = options.distDir || DEFAULT_DIST;
-  const envVars = options.vars || loadEnv(path.join(__dirname, '.env'));
+  const envVars = {
+    ...process.env,
+    ...(options.vars || loadEnv(path.join(__dirname, '.env')))
+  };
 
   const layoutPath = path.join(srcDir, '_layout.html');
   const layoutSrc = fs.existsSync(layoutPath) ? fs.readFileSync(layoutPath, 'utf8') : '{{content}}';
