@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://satscratcher.shop/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://satscratcher.shop/guide/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://satscratcher.shop/guide/quickstart.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://satscratcher.shop/guide/get-a-bitcoin-address.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://satscratcher.shop/guide/what-if-i-win.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://satscratcher.shop/guide/troubleshooting.html</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://satscratcher.shop/faq.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://satscratcher.shop/terms.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://satscratcher.shop/privacy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://satscratcher.shop/shipping-and-returns.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+</urlset>
