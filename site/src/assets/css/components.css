@@ -26,7 +26,12 @@
   align-items: center;
   gap: var(--sp-3);
 }
-.topbar__logo { height: 32px; width: auto; }
+.topbar__wordmark {
+  font-family: var(--display);
+  font-size: var(--fs-md);
+  color: var(--primary);
+  letter-spacing: 0.03em;
+}
 .topbar__nav {
   margin-left: auto;
   display: flex;
