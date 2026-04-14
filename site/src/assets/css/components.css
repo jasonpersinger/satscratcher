@@ -26,13 +26,7 @@
   align-items: center;
   gap: var(--sp-3);
 }
-.topbar__logo { width: 32px; height: 32px; }
-.topbar__wordmark {
-  font-family: var(--display);
-  font-size: var(--fs-sm);
-  color: var(--primary);
-  letter-spacing: 0.02em;
-}
+.topbar__logo { height: 32px; width: auto; }
 .topbar__nav {
   margin-left: auto;
   display: flex;
@@ -75,7 +69,6 @@
 
 @media (max-width: 680px) {
   .topbar__nav { display: none; }
-  .topbar__wordmark { display: none; }
 }
 
 /* ---- Footer ---- */
@@ -92,11 +85,6 @@
   gap: var(--sp-7);
 }
 .footer__brand { display: flex; gap: var(--sp-4); align-items: flex-start; }
-.footer__mascot {
-  width: 56px;
-  height: 56px;
-  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.3));
-}
 .footer__wordmark {
   font-family: var(--display);
   font-size: var(--fs-md);
